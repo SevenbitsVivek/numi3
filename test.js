@@ -17,9 +17,8 @@ async function test() {
         const decoder = new InputDataDecoder(abi);
         const result = decoder.decodeData(data);
         if (result.method == abi[3].name || result.method == abi[4].name) {
-            var results = [result] 
+            var results = [result]
             console.log("results ===>", results);
-            // console.log("results.inputs ===>", result.inputs[0].toNumber());
         }
     }
 }
