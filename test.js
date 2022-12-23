@@ -20,12 +20,12 @@ export const test = async (req, res) => {
             const result = decoder.decodeData(data);
             if (result.method == abi[3].name) {
                 var etherFundResults = []
-                etherFundResults.push(result.inputs + ethers.BigNumber.from(result.inputs[0].toNumber() + ethers.BigNumber.from(result.inputs[1]).toNumber()) + ", " + "value:" + ethers.utils.formatEther(transactionResponse.data.result[i].value) + " " +"ether")
+                etherFundResults.push("signature:-" + result.inputs[3] + ", " + "hash:-" + result.inputs [2]+ ", " + "customerId:-" + ethers.BigNumber.from(result.inputs[0].toNumber()) + ", " + "roles:-" + ethers.BigNumber.from(result.inputs[1]).toNumber() + ", " + "value:-" + ethers.utils.formatEther(transactionResponse.data.result[i].value) + " " + "ether")
                 var jsonString = JSON.stringify(etherFundResults);
                 console.log("etherFundResults ===>", jsonString);
             } else if (result.method == abi[4].name) {
                 var tokenFundResults = []
-                tokenFundResults.push(result.inputs + ethers.BigNumber.from(result.inputs[1]).toNumber() + ethers.BigNumber.from(result.inputs[2]).toNumber())
+                tokenFundResults.push("tokenAddress:-" + result.inputs[0] + ", " + "customerId:-" + ethers.BigNumber.from(result.inputs[1]).toNumber() + ", " + "roles:-" + ethers.BigNumber.from(result.inputs[2]).toNumber() + ", " + "amount:-" + result.inputs[3] + ", " + "hash:-" + result.inputs[4] + ", " + "signature:-" + result.inputs[5])
                 var jsonString = JSON.stringify(tokenFundResults);
                 console.log("tokenFundResult ===>", jsonString)
             }
