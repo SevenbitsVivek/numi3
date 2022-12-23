@@ -13,7 +13,7 @@ export const test = async (req, res) => {
             headers: { "Accept-Encoding": "gzip,deflate,compress" },
             method: "GET",
         })
-        for (var i = 0; i >= startblock && i <= endblock; i++) {
+        for (var i = 0; i < transactionResponse.data.result.length; i++) {
             const data = transactionResponse.data.result[i].input;
             const decoder = new InputDataDecoder(abi);
             const result = decoder.decodeData(data);
