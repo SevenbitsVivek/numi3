@@ -1,5 +1,7 @@
 import axios from 'axios';
 import InputDataDecoder from 'ethereum-input-data-decoder';
+import BigNumber from 'big-number';
+import ethers from 'ethers';
 
 export const test = async (req, res) => {
     try {
@@ -19,12 +21,12 @@ export const test = async (req, res) => {
             const result = decoder.decodeData(data);
             if (result.method == abi[3].name) {
                 var etherFundResults = []
-                etherFundResults.push(result)
+                etherFundResults.push(result.inputs + ethers.BigNumber.from(result.inputs[0].toNumber() + ethers.BigNumber.from(result.inputs[1]).toNumber()))
                 var jsonString = JSON.stringify(etherFundResults);
                 console.log("etherFundResults ===>", jsonString);
             } else if (result.method == abi[4].name) {
                 var tokenFundResults = []
-                tokenFundResults.push(result)
+                tokenFundResults.push(result.inputs + ethers.BigNumber.from(result.inputs[1]).toNumber() + ethers.BigNumber.from(result.inputs[2]).toNumber())
                 var jsonString = JSON.stringify(tokenFundResults);
                 console.log("tokenFundResult ===>", jsonString)
             }
