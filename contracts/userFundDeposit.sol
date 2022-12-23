@@ -19,11 +19,6 @@ contract UserFundDeposit is Ownable, ReentrancyGuard {
 
     event EtherTransfered(address _from, address _to, uint256 indexed _amount);
 
-    struct CustomerId {
-        string id;
-    }
-
-    mapping(string => CustomerId) private customerId;
     mapping(bytes => bool) private signatureUsed;
 
     function depositEtherFund(
@@ -41,7 +36,6 @@ contract UserFundDeposit is Ownable, ReentrancyGuard {
         );
         require(!signatureUsed[signature], "Already signature used");
         address payable owner = payable(_owner);
-        customerId[custId] = CustomerId(custId);
         emit EtherTransfered(msg.sender, owner, msg.value);
         owner.transfer(msg.value);
         signatureUsed[signature] = true;
@@ -70,7 +64,6 @@ contract UserFundDeposit is Ownable, ReentrancyGuard {
             token.allowance(msg.sender, address(this)) >= amount,
             "Check the token allowance"
         );
-        customerId[custId] = CustomerId(custId);
         signatureUsed[signature] = true;
         emit TokenTransfered(tokenAddress, msg.sender, _owner, amount);
         SafeERC20.safeTransferFrom(token, msg.sender, _owner, amount);
