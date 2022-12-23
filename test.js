@@ -5,10 +5,209 @@ import ethers from 'ethers';
 export const test = async (req, res) => {
     try {
         const MYAPIKEY = "75TRTDT2BKZV83XSN3YZ6MVZ2PVZR75M1E"
-        const Address = "0xd66330E638136FbF690e2C2D66A7FDc04F050197"
+        const Address = "0x05d650848a15af9493a4569bDE41b5744132437C"
         const startblock = "0"
         const endblock = "99999999"
-        const abi = [{ "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "_from", "type": "address" }, { "indexed": false, "internalType": "address", "name": "_to", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "EtherTransfered", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "_token", "type": "address" }, { "indexed": false, "internalType": "address", "name": "_from", "type": "address" }, { "indexed": false, "internalType": "address", "name": "_to", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "TokenTransfered", "type": "event" }, { "inputs": [{ "internalType": "uint256", "name": "custId", "type": "uint256" }, { "internalType": "uint256", "name": "roles", "type": "uint256" }, { "internalType": "bytes32", "name": "hash", "type": "bytes32" }, { "internalType": "bytes", "name": "signature", "type": "bytes" }], "name": "depositEtherFund", "outputs": [], "stateMutability": "payable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "tokenAddress", "type": "address" }, { "internalType": "uint256", "name": "custId", "type": "uint256" }, { "internalType": "uint256", "name": "roles", "type": "uint256" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "bytes32", "name": "hash", "type": "bytes32" }, { "internalType": "bytes", "name": "signature", "type": "bytes" }], "name": "depositTokenFund", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "tokenAddress", "type": "address" }], "name": "getTokenBalance", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]
+        const abi = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "custId",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "roles",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "hash",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "signature",
+                        "type": "bytes"
+                    }
+                ],
+                "name": "depositEtherFund",
+                "outputs": [],
+                "stateMutability": "payable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "tokenAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "custId",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "roles",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "amount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "hash",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "signature",
+                        "type": "bytes"
+                    }
+                ],
+                "name": "depositTokenFund",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": false,
+                        "internalType": "address",
+                        "name": "_from",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "address",
+                        "name": "_to",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "uint256",
+                        "name": "_amount",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "EtherTransfered",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "previousOwner",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "newOwner",
+                        "type": "address"
+                    }
+                ],
+                "name": "OwnershipTransferred",
+                "type": "event"
+            },
+            {
+                "inputs": [],
+                "name": "renounceOwnership",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": false,
+                        "internalType": "address",
+                        "name": "_token",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "address",
+                        "name": "_from",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "address",
+                        "name": "_to",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "uint256",
+                        "name": "_amount",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "TokenTransfered",
+                "type": "event"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "newOwner",
+                        "type": "address"
+                    }
+                ],
+                "name": "transferOwnership",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "tokenAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "recipient",
+                        "type": "address"
+                    }
+                ],
+                "name": "getTokenBalance",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "owner",
+                "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ]
         let transactionResponse = await axios({
             url: `https://api-goerli.etherscan.io/api?module=account&action=txlist&address=${Address}&startblock=${startblock}&endblock=${endblock}&sort=asc&apikey=${MYAPIKEY}`,
             headers: { "Accept-Encoding": "gzip,deflate,compress" },
@@ -18,16 +217,26 @@ export const test = async (req, res) => {
             const data = transactionResponse.data.result[i].input;
             const decoder = new InputDataDecoder(abi);
             const result = decoder.decodeData(data);
-            if (result.method == abi[3].name) {
+            console.log(result.method)
+            if (result.method == "depositEtherFund") {
+                var resultValue1 = result.inputs[0]
+                var resultValue2 = ethers.BigNumber.from(result.inputs[1]).toNumber()
+                var resultValue3 = result.inputs[2]
+                var resultValue4 = result.inputs[3]
+                var resultValue5 = ethers.utils.formatEther(transactionResponse.data.result[i].value)
                 var etherFundResults = []
-                etherFundResults.push("signature:-" + result.inputs[3] + ", " + "hash:-" + result.inputs [2]+ ", " + "customerId:-" + ethers.BigNumber.from(result.inputs[0].toNumber()) + ", " + "roles:-" + ethers.BigNumber.from(result.inputs[1]).toNumber() + ", " + "value:-" + ethers.utils.formatEther(transactionResponse.data.result[i].value) + " " + "ether")
-                var jsonString = JSON.stringify(etherFundResults);
-                console.log("etherFundResults ===>", jsonString);
-            } else if (result.method == abi[4].name) {
+                etherFundResults.push({ custId: resultValue1, roles: resultValue2, hash: resultValue3, signature: resultValue4, value: resultValue5 })
+                console.log("etherFundResults ===>", etherFundResults);
+            } else if (result.method == "depositTokenFund") {
                 var tokenFundResults = []
-                tokenFundResults.push("tokenAddress:-" + result.inputs[0] + ", " + "customerId:-" + ethers.BigNumber.from(result.inputs[1]).toNumber() + ", " + "roles:-" + ethers.BigNumber.from(result.inputs[2]).toNumber() + ", " + "amount:-" + result.inputs[3] + ", " + "hash:-" + result.inputs[4] + ", " + "signature:-" + result.inputs[5])
-                var jsonString = JSON.stringify(tokenFundResults);
-                console.log("tokenFundResult ===>", jsonString)
+                var resultValue1 = result.inputs[0]
+                var resultValue2 = result.inputs[1]
+                var resultValue3 = ethers.BigNumber.from(result.inputs[2]).toNumber()
+                var resultValue4 = ethers.BigNumber.from(result.inputs[3]).toNumber()
+                var resultValue5 = result.inputs[4]
+                var resultValue6 = result.inputs[5]
+                tokenFundResults.push({ tokenAddress: resultValue1, custId: resultValue2, roles: resultValue3, amount: resultValue4, hash: resultValue5, signature: resultValue6 })
+                console.log("tokenFundResults ===>", tokenFundResults);
             }
         }
     } catch (error) {

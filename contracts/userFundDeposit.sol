@@ -20,30 +20,26 @@ contract UserFundDeposit is Ownable, ReentrancyGuard {
     event EtherTransfered(address _from, address _to, uint256 indexed _amount);
 
     struct CustomerId {
-        uint256 id;
+        string id;
     }
 
-    mapping(uint256 => CustomerId) private customerId;
+    mapping(string => CustomerId) private customerId;
     mapping(bytes => bool) private signatureUsed;
 
     function depositEtherFund(
-        uint256 custId,
+        string memory custId,
         uint256 roles,
         bytes32 hash,
         bytes memory signature
     ) public payable nonReentrant {
         require(roles == 10 || roles == 20, "Invalid roles");
         require(msg.value != 0, "Insufficient amount");
+        require(bytes(custId).length > 0, "Invalid custId");
         require(
             recoverSigner(hash, signature) == owner(),
             "Address is not authorized"
         );
         require(!signatureUsed[signature], "Already signature used");
-        require(
-            customerId[custId].id == 0,
-            "Customer with same id already exists."
-        );
-        require(custId != 0, "CustomerId cannot be 0");
         address payable owner = payable(_owner);
         customerId[custId] = CustomerId(custId);
         emit EtherTransfered(msg.sender, owner, msg.value);
@@ -53,7 +49,7 @@ contract UserFundDeposit is Ownable, ReentrancyGuard {
 
     function depositTokenFund(
         address tokenAddress,
-        uint256 custId,
+        string memory custId,
         uint256 roles,
         uint256 amount,
         bytes32 hash,
@@ -62,16 +58,12 @@ contract UserFundDeposit is Ownable, ReentrancyGuard {
         require(roles == 10 || roles == 20, "Invalid roles");
         require(amount != 0, "Insufficient amount");
         require(tokenAddress != address(0), "Address cannot be zero");
+        require(bytes(custId).length > 0, "Invalid custId");
         require(
             recoverSigner(hash, signature) == owner(),
             "Address is not authorized"
         );
         require(!signatureUsed[signature], "Already signature used");
-        require(
-            customerId[custId].id == 0,
-            "Customer with same id already exists."
-        );
-        require(custId != 0, "CustomerId cannot be 0");
         IERC20 token;
         token = IERC20(tokenAddress);
         require(
