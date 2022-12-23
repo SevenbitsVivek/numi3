@@ -20,13 +20,13 @@ export const test = async (req, res) => {
             if (result.method == abi[3].name) {
                 var etherFundResults = []
                 etherFundResults.push(result)
-                var myJsonString = JSON.stringify(etherFundResults);
-                console.log("etherFundResults ===>", myJsonString);
+                var jsonString = JSON.stringify(etherFundResults);
+                console.log("etherFundResults ===>", jsonString);
             } else if (result.method == abi[4].name) {
                 var tokenFundResults = []
                 tokenFundResults.push(result)
-                var myJsonString = JSON.stringify(tokenFundResults);
-                console.log("tokenFundResult ===>", myJsonString)
+                var jsonString = JSON.stringify(tokenFundResults);
+                console.log("tokenFundResult ===>", jsonString)
             }
         }
     } catch (error) {
