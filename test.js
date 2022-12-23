@@ -1,6 +1,5 @@
 import axios from 'axios';
 import InputDataDecoder from 'ethereum-input-data-decoder';
-import BigNumber from 'big-number';
 
 export const test = async (req, res) => {
     try {
