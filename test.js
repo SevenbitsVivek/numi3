@@ -21,7 +21,7 @@ export const test = async (req, res) => {
             const result = decoder.decodeData(data);
             if (result.method == abi[3].name) {
                 var etherFundResults = []
-                etherFundResults.push(result.inputs + ethers.BigNumber.from(result.inputs[0].toNumber() + ethers.BigNumber.from(result.inputs[1]).toNumber()) + "value:" + ethers.utils.formatEther(transactionResponse.data.result[i].value))
+                etherFundResults.push(result.inputs + ethers.BigNumber.from(result.inputs[0].toNumber() + ethers.BigNumber.from(result.inputs[1]).toNumber()) + ',' + "value:" + ethers.utils.formatEther(transactionResponse.data.result[i].value))
                 var jsonString = JSON.stringify(etherFundResults);
                 console.log("etherFundResults ===>", jsonString);
             } else if (result.method == abi[4].name) {
