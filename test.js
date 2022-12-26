@@ -4,10 +4,10 @@ import ethers from 'ethers';
 
 export const test = async (req, res) => {
     // try {
-    const MYAPIKEY = "75TRTDT2BKZV83XSN3YZ6MVZ2PVZR75M1E"
-    const Address = "0x222BbD004F253720F1Db495eBe9779BC40cE0e5d"
-    const startblock = "0"
-    const endblock = "99999999"
+    const MY_API_KEY = "75TRTDT2BKZV83XSN3YZ6MVZ2PVZR75M1E"
+    const CONTRACT_ADDRESS = "0x222BbD004F253720F1Db495eBe9779BC40cE0e5d"
+    const START_BLOCK = "0"
+    const END_BLOCK = "99999999"
     const abi = [
         {
             "anonymous": false,
@@ -209,9 +209,9 @@ export const test = async (req, res) => {
         }
     ]
     const provider = new ethers.providers.JsonRpcProvider("https://goerli.infura.io/v3/04b835bf9aca4468b7d7ee914b4f58ff");
-    const contract = new ethers.Contract(Address, abi, provider);
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, abi, provider);
     let transactionResponse = await axios({
-        url: `https://api-goerli.etherscan.io/api?module=account&action=txlist&address=${Address}&startblock=${startblock}&endblock=${endblock}&sort=asc&apikey=${MYAPIKEY}`,
+        url: `https://api-goerli.etherscan.io/api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&startblock=${START_BLOCK}&endblock=${END_BLOCK}&sort=asc&apikey=${MY_API_KEY}`,
         headers: { "Accept-Encoding": "gzip,deflate,compress" },
         method: "GET",
     })
