@@ -219,23 +219,12 @@ export const test = async (req, res) => {
             const result = decoder.decodeData(data);
             if (transactionResponse.data.result[i].txreceipt_status == 1) {
                 if (result.method == "depositEtherFund") {
-                    var resultValue1 = result.inputs[0]
-                    var resultValue2 = ethers.BigNumber.from(result.inputs[1]).toNumber()
-                    var resultValue3 = result.inputs[2]
-                    var resultValue4 = result.inputs[3]
-                    var resultValue5 = ethers.utils.formatEther(transactionResponse.data.result[i].value)
                     var etherFundResults = []
-                    etherFundResults.push({ custId: resultValue1, roles: resultValue2, hash: resultValue3, signature: resultValue4, value: resultValue5 })
+                    etherFundResults.push({ [result.names[0]]: result.inputs[0], [result.names[1]]: ethers.BigNumber.from(result.inputs[1]).toNumber(), [result.names[2]]: result.inputs[2], [result.names[3]]: result.inputs[3], value: ethers.utils.formatEther(transactionResponse.data.result[i].value) })
                     console.log("etherFundResults ===>", etherFundResults);
                 } else if (result.method == "depositTokenFund") {
                     var tokenFundResults = []
-                    var resultValue1 = result.inputs[0]
-                    var resultValue2 = result.inputs[1]
-                    var resultValue3 = ethers.BigNumber.from(result.inputs[2]).toNumber()
-                    var resultValue4 = ethers.BigNumber.from(result.inputs[3]).toNumber()
-                    var resultValue5 = result.inputs[4]
-                    var resultValue6 = result.inputs[5]
-                    tokenFundResults.push({ tokenAddress: resultValue1, custId: resultValue2, roles: resultValue3, amount: resultValue4, hash: resultValue5, signature: resultValue6 })
+                    tokenFundResults.push({ [result.names[0]]: result.inputs[0], [result.names[1]]: [result.inputs[1]], [result.names[1]]: ethers.BigNumber.from(result.inputs[2]).toNumber(), [result.names[3]]: ethers.BigNumber.from(result.inputs[3]).toNumber(), [result.names[4]]: result.inputs[4], [result.names[5]]: result.inputs[5] })
                     console.log("tokenFundResults ===>", tokenFundResults);
                 }
             }
