@@ -1,5 +1,4 @@
 const fs = require('fs');
-const path = require('path');
 
 async function setLatestBlock(json) {
     try {
@@ -15,5 +14,5 @@ async function setLatestBlock(json) {
 }
 
 module.exports = {
-    setLatestBlock: setLatestBlock,
+    setLatestBlock: setLatestBlock
 }

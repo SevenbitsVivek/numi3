@@ -217,38 +217,39 @@ const test = async (req, res) => {
             headers: { "Accept-Encoding": "gzip,deflate,compress" },
             method: "GET",
         })
-        for (var i = 0; i < transactionResponse.data.result.length; i++) {
-            const data = transactionResponse.data.result[i].input;
-            const decoder = new InputDataDecoder(abi);
-            const result = decoder.decodeData(data);
-            if (transactionResponse.data.result[i].txreceipt_status == 1) {
-                if (result.method == "depositEtherFund") {
-                    let eventFilter = contract.filters.EtherTransfered()
-                    let events = await contract.queryFilter(eventFilter)
-                    if (events) {
-                        var etherFundResults = []
-                        etherFundResults.push({ [result.names[0]]: result.inputs[0], [result.names[1]]: result.inputs[1], [result.names[2]]: result.inputs[2], [result.names[3]]: result.inputs[3], value: ethers.utils.formatEther(transactionResponse.data.result[i].value) })
-                        console.log("etherFundResults ===>", etherFundResults);
+        fs.readFile("deposit.json", async function (err, data) {
+            if (err) throw err;
+            const users = JSON.parse(data);
+            START_BLOCK = users
+            console.log("START_BLOCK 2 ===>", START_BLOCK)
+            for (var i = 0; i < transactionResponse.data.result.length; i++) {
+                const data = transactionResponse.data.result[i].input;
+                const decoder = new InputDataDecoder(abi);
+                const result = decoder.decodeData(data);
+                if (transactionResponse.data.result[i].blockNumber > START_BLOCK) {
+                    if (transactionResponse.data.result[i].txreceipt_status == 1) {
+                        if (result.method == "depositEtherFund") {
+                            let eventFilter = contract.filters.EtherTransfered()
+                            let events = await contract.queryFilter(eventFilter)
+                            if (events) {
+                                var etherFundResults = []
+                                etherFundResults.push({ [result.names[0]]: result.inputs[0], [result.names[1]]: result.inputs[1], [result.names[2]]: result.inputs[2], [result.names[3]]: result.inputs[3], value: ethers.utils.formatEther(transactionResponse.data.result[i].value) })
+                                console.log("etherFundResults ===>", etherFundResults);
+                            }
+                        } else if (result.method == "depositTokenFund") {
+                            let eventFilter = contract.filters.TokenTransfered()
+                            let events = await contract.queryFilter(eventFilter)
+                            if (events) {
+                                var tokenFundResults = []
+                                tokenFundResults.push({ [result.names[0]]: result.inputs[0], [result.names[1]]: [result.inputs[1]], [result.names[1]]: result.inputs[2], [result.names[3]]: result.inputs[3], [result.names[4]]: result.inputs[4], [result.names[5]]: result.inputs[5] })
+                                console.log("tokenFundResults ===>", tokenFundResults);
+                            }
+                        }
                     }
-                } else if (result.method == "depositTokenFund") {
-                    let eventFilter = contract.filters.TokenTransfered()
-                    let events = await contract.queryFilter(eventFilter)
-                    if (events) {
-                        var tokenFundResults = []
-                        tokenFundResults.push({ [result.names[0]]: result.inputs[0], [result.names[1]]: [result.inputs[1]], [result.names[1]]: result.inputs[2], [result.names[3]]: result.inputs[3], [result.names[4]]: result.inputs[4], [result.names[5]]: result.inputs[5] })
-                        console.log("tokenFundResults ===>", tokenFundResults);
-                    }
+                    await fileHelper.setLatestBlock(transactionResponse.data.result[i].blockNumber);
                 }
-                await fileHelper.setLatestBlock(transactionResponse.data.result[i].blockNumber);
             }
-
-            fs.readFile("deposit.json", function (err, data) {
-                if (err) throw err;
-                const users = JSON.parse(data);
-                START_BLOCK = users
-                console.log("START_BLOCK ===>", START_BLOCK)
-            })
-        }
+        })
     } catch (error) {
         return res.status(409).json({ error: error.message })
     }
