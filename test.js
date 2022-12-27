@@ -1,12 +1,14 @@
-import axios from 'axios';
-import InputDataDecoder from 'ethereum-input-data-decoder';
-import ethers from 'ethers';
+const axios = require('axios');
+const InputDataDecoder = require('ethereum-input-data-decoder');
+const fileHelper = require('./helper/fileHelper.js');
+const ethers = require('ethers');
+const fs = require('fs');
 
-export const test = async (req, res) => {
+const test = async (req, res) => {
     try {
         const MY_API_KEY = "75TRTDT2BKZV83XSN3YZ6MVZ2PVZR75M1E"
         const CONTRACT_ADDRESS = "0x222BbD004F253720F1Db495eBe9779BC40cE0e5d"
-        const START_BLOCK = "0"
+        var START_BLOCK = "0"
         const END_BLOCK = "99999999"
         const abi = [
             {
@@ -237,12 +239,21 @@ export const test = async (req, res) => {
                         console.log("tokenFundResults ===>", tokenFundResults);
                     }
                 }
+                await fileHelper.setLatestBlock(transactionResponse.data.result[i].blockNumber);
             }
+
+            fs.readFile("deposit.json", function (err, data) {
+                if (err) throw err;
+                const users = JSON.parse(data);
+                START_BLOCK = users
+                console.log("START_BLOCK ===>", START_BLOCK)
+            })
         }
     } catch (error) {
         return res.status(409).json({ error: error.message })
     }
 }
+test()
+
 //BigNumber conversion
 //ethers.BigNumber.from(result.inputs[1]).toNumber()
-test()
