@@ -221,7 +221,7 @@ const test = async (req, res) => {
             if (err) throw err;
             const users = JSON.parse(data);
             START_BLOCK = users
-            console.log("START_BLOCK 2 ===>", START_BLOCK)
+            console.log("START_BLOCK ===>", START_BLOCK)
             for (var i = 0; i < transactionResponse.data.result.length; i++) {
                 const data = transactionResponse.data.result[i].input;
                 const decoder = new InputDataDecoder(abi);
