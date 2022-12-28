@@ -10,6 +10,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract UserFundDeposit is Ownable, ReentrancyGuard {
     uint256 customer = 10;
     uint256 business = 20;
+    address transferedAddress;
     event TokenTransfered(
         address _token,
         address _from,
@@ -31,13 +32,17 @@ contract UserFundDeposit is Ownable, ReentrancyGuard {
         require(msg.value != 0, "Insufficient amount");
         require(bytes(custId).length > 0, "Invalid custId");
         require(
+            transferedAddress != address(0),
+            "TransferedAddress address cannot be 0"
+        );
+        require(
             recoverSigner(hash, signature) == owner(),
             "Address is not authorized"
         );
         require(!signatureUsed[signature], "Already signature used");
-        address payable owner = payable(_owner);
-        emit EtherTransfered(msg.sender, owner, msg.value);
-        owner.transfer(msg.value);
+        address payable _transferedAddress = payable(transferedAddress);
+        emit EtherTransfered(msg.sender, transferedAddress, msg.value);
+        _transferedAddress.transfer(msg.value);
         signatureUsed[signature] = true;
     }
 
@@ -52,6 +57,10 @@ contract UserFundDeposit is Ownable, ReentrancyGuard {
         require(roles == 10 || roles == 20, "Invalid roles");
         require(amount != 0, "Insufficient amount");
         require(tokenAddress != address(0), "Address cannot be zero");
+        require(
+            transferedAddress != address(0),
+            "TransferedAddress address cannot be 0"
+        );
         require(bytes(custId).length > 0, "Invalid custId");
         require(
             recoverSigner(hash, signature) == owner(),
@@ -65,8 +74,18 @@ contract UserFundDeposit is Ownable, ReentrancyGuard {
             "Check the token allowance"
         );
         signatureUsed[signature] = true;
-        emit TokenTransfered(tokenAddress, msg.sender, _owner, amount);
-        SafeERC20.safeTransferFrom(token, msg.sender, _owner, amount);
+        emit TokenTransfered(
+            tokenAddress,
+            msg.sender,
+            transferedAddress,
+            amount
+        );
+        SafeERC20.safeTransferFrom(
+            token,
+            msg.sender,
+            transferedAddress,
+            amount
+        );
     }
 
     function getTokenBalance(address tokenAddress, address recipient)
@@ -90,5 +109,16 @@ contract UserFundDeposit is Ownable, ReentrancyGuard {
             abi.encodePacked("\x19Ethereum Signed Message:\n32", hash)
         );
         return ECDSA.recover(messageDigest, signature);
+    }
+
+    function setTransferedAddress(address newTransferedAddress)
+        public
+        onlyOwner
+    {
+        transferedAddress = newTransferedAddress;
+    }
+
+    function getTransferedAddress() public view onlyOwner returns (address) {
+        return transferedAddress;
     }
 }
