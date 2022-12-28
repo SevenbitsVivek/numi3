@@ -8,7 +8,7 @@ const test = async (req, res) => {
     try {
         const MY_API_KEY = "75TRTDT2BKZV83XSN3YZ6MVZ2PVZR75M1E"
         const CONTRACT_ADDRESS = "0x888542594b60f377928e7617CDF8C94c24eF829d"
-        var START_BLOCK = "0"
+        var START_BLOCK
         const END_BLOCK = "99999999"
         const abi = [
             {
