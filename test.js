@@ -3,6 +3,7 @@ const InputDataDecoder = require('ethereum-input-data-decoder');
 const fileHelper = require('./helper/fileHelper.js');
 const ethers = require('ethers');
 const fs = require('fs');
+const abi = require('./abi/abi.js')
 
 const test = async (req, res) => {
     try {
@@ -10,19 +11,18 @@ const test = async (req, res) => {
         const CONTRACT_ADDRESS = "0x888542594b60f377928e7617CDF8C94c24eF829d"
         var START_BLOCK
         const END_BLOCK = "99999999"
-        const abi = [{ "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "_from", "type": "address" }, { "indexed": false, "internalType": "address", "name": "_to", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "EtherTransfered", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "_token", "type": "address" }, { "indexed": false, "internalType": "address", "name": "_from", "type": "address" }, { "indexed": false, "internalType": "address", "name": "_to", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "TokenTransfered", "type": "event" }, { "inputs": [{ "internalType": "string", "name": "custId", "type": "string" }, { "internalType": "uint256", "name": "roles", "type": "uint256" }, { "internalType": "bytes32", "name": "hash", "type": "bytes32" }, { "internalType": "bytes", "name": "signature", "type": "bytes" }], "name": "depositEtherFund", "outputs": [], "stateMutability": "payable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "tokenAddress", "type": "address" }, { "internalType": "string", "name": "custId", "type": "string" }, { "internalType": "uint256", "name": "roles", "type": "uint256" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "bytes32", "name": "hash", "type": "bytes32" }, { "internalType": "bytes", "name": "signature", "type": "bytes" }], "name": "depositTokenFund", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "tokenAddress", "type": "address" }, { "internalType": "address", "name": "recipient", "type": "address" }], "name": "getTokenBalance", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getTransferedAddress", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "newTransferedAddress", "type": "address" }], "name": "setTransferedAddress", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]
         const provider = new ethers.providers.JsonRpcProvider("https://goerli.infura.io/v3/04b835bf9aca4468b7d7ee914b4f58ff");
         const contract = new ethers.Contract(CONTRACT_ADDRESS, abi, provider);
-        let transactionResponse = await axios({
-            url: `https://api-goerli.etherscan.io/api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&startblock=${START_BLOCK}&endblock=${END_BLOCK}&sort=asc&apikey=${MY_API_KEY}`,
-            headers: { "Accept-Encoding": "gzip,deflate,compress" },
-            method: "GET",
-        })
         fs.readFile("deposit.json", async function (err, data) {
             if (err) throw err;
             const users = JSON.parse(data);
             START_BLOCK = users
             console.log("START_BLOCK ===>", START_BLOCK)
+            let transactionResponse = await axios({
+                url: `https://api-goerli.etherscan.io/api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&startblock=${START_BLOCK}&endblock=${END_BLOCK}&sort=asc&apikey=${MY_API_KEY}`,
+                headers: { "Accept-Encoding": "gzip,deflate,compress" },
+                method: "GET",
+            })
             for (var i = 0; i < transactionResponse.data.result.length; i++) {
                 const data = transactionResponse.data.result[i].input;
                 const decoder = new InputDataDecoder(abi);
