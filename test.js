@@ -42,7 +42,7 @@ const test = async (req, res) => {
                             let events = await contract.queryFilter(eventFilter)
                             if (events) {
                                 var tokenFundResults = []
-                                tokenFundResults.push({ [result.names[0]]: result.inputs[0], [result.names[1]]: [result.inputs[1]], [result.names[1]]: result.inputs[2], [result.names[3]]: result.inputs[3], [result.names[4]]: result.inputs[4], [result.names[5]]: result.inputs[5] })
+                                tokenFundResults.push({ [result.names[0]]: result.inputs[0], [result.names[1]]: [result.inputs[1]], [result.names[2]]: result.inputs[2], [result.names[3]]: result.inputs[3], [result.names[4]]: result.inputs[4], [result.names[5]]: result.inputs[5] })
                                 console.log("tokenFundResults ===>", tokenFundResults);
                             }
                         }
