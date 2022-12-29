@@ -17,12 +17,12 @@ const test = async (req, res) => {
             if (err) throw err;
             const users = JSON.parse(data);
             START_BLOCK = users
-            console.log("START_BLOCK ===>", START_BLOCK)
             let transactionResponse = await axios({
-                url: `https://api-goerli.etherscan.io/api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&startblock=${START_BLOCK}&endblock=${END_BLOCK}&sort=asc&apikey=${MY_API_KEY}`,
+                url: `https://api-goerli.etherscan.io/api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&startblock=${START_BLOCK}&endblock=${END_BLOCK}&sort=asc&apikey=${NETWORK_API_KEY}`,
                 headers: { "Accept-Encoding": "gzip,deflate,compress" },
                 method: "GET",
             })
+            console.log("START_BLOCK ===>", START_BLOCK)
             for (var i = 0; i < transactionResponse.data.result.length; i++) {
                 const data = transactionResponse.data.result[i].input;
                 const decoder = new InputDataDecoder(abi);
