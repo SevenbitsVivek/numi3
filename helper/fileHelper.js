@@ -1,8 +1,8 @@
 const fs = require('fs');
 
-async function setLatestBlock(json) {
+async function setLatestBlock(blockNumber) {
     try {
-        fs.writeFile('deposit.json', json, function (err) {
+        fs.writeFile('deposit.json', blockNumber, function (err) {
             if (err) return console.log(err);
             console.log('Value updated in json file');
         });

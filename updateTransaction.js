@@ -11,7 +11,7 @@ const test = async (req, res) => {
         const CONTRACT_ADDRESS = "0x888542594b60f377928e7617CDF8C94c24eF829d"
         var START_BLOCK
         const END_BLOCK = "99999999"
-        const provider = new ethers.providers.JsonRpcProvider("https://goerli.infura.io/v3/04b835bf9aca4468b7d7ee914b4f58ff");
+        const provider = new ethers.providers.JsonRpcProvider("https://goerli.infura.io/v3/6ce920f452c84ea1b3379b187e05ade6");
         const contract = new ethers.Contract(CONTRACT_ADDRESS, abi, provider);
         fs.readFile("deposit.json", async function (err, data) {
             if (err) throw err;
